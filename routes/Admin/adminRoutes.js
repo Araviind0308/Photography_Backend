@@ -1,7 +1,6 @@
 const express = require('express')
 
 const { adminProtect } = require('../../middleware/adminAuth');
-const { protect, authorize } = require('../../middleware/auth')
 
 const createUploader = require('../../middleware/multer')
 
@@ -117,6 +116,42 @@ router.put(
   updateBanner
 )
 router.delete('/banners/:id', adminProtect, deleteBanner)
+
+
+//////////////////////// Testimonial Routes ////////////////////////
+
+const {
+  createTestimonial,
+  listTestimonials,
+  getTestimonial,
+  updateTestimonial,
+  deleteTestimonial,
+} = require('../../controllers/Admin/testimonialController')
+
+const testimonialUpload = createUploader('testimonials')
+
+// Testimonials with images
+router.post(
+  '/testimonials',
+  adminProtect,
+  testimonialUpload.fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'backgroundImage', maxCount: 1 },
+  ]),
+  createTestimonial
+)
+router.get('/testimonials', adminProtect, listTestimonials)
+router.get('/testimonials/:id', adminProtect, getTestimonial)
+router.put(
+  '/testimonials/:id',
+  adminProtect,
+  testimonialUpload.fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'backgroundImage', maxCount: 1 },
+  ]),
+  updateTestimonial
+)
+router.delete('/testimonials/:id', adminProtect, deleteTestimonial)
 
 
 module.exports = router

@@ -27,6 +27,17 @@ async function createProduct(req, res, next) {
       printSizes: parseMaybeJSON(body.printSizes) || [],
       printMaterials: parseMaybeJSON(body.printMaterials) || [],
       framingOptions: parseMaybeJSON(body.framingOptions) || [],
+      // Filter fields
+      theme: body.theme,
+      color: body.color,
+      country: body.country,
+      bestseller: body.bestseller === 'true' || body.bestseller === true,
+      // Product details
+      originalPrice: body.originalPrice ? parseFloat(body.originalPrice) : undefined,
+      inStock: body.inStock !== undefined ? (body.inStock === 'true' || body.inStock === true) : true,
+      rating: body.rating ? parseFloat(body.rating) : 0,
+      reviews: body.reviews ? parseInt(body.reviews) : 0,
+      discount: body.discount ? parseFloat(body.discount) : 0,
     }
 
     if (req.files && req.files.coverImage && req.files.coverImage[0]) {
@@ -75,7 +86,21 @@ async function updateProduct(req, res, next) {
       price: body.price,
       currency: body.currency,
       isPublished: body.isPublished,
+      // Filter fields
+      theme: body.theme,
+      color: body.color,
+      country: body.country,
+      bestseller: body.bestseller !== undefined ? (body.bestseller === 'true' || body.bestseller === true) : undefined,
+      // Product details
+      originalPrice: body.originalPrice !== undefined ? parseFloat(body.originalPrice) : undefined,
+      inStock: body.inStock !== undefined ? (body.inStock === 'true' || body.inStock === true) : undefined,
+      rating: body.rating !== undefined ? parseFloat(body.rating) : undefined,
+      reviews: body.reviews !== undefined ? parseInt(body.reviews) : undefined,
+      discount: body.discount !== undefined ? parseFloat(body.discount) : undefined,
     }
+    
+    // Remove undefined fields
+    Object.keys(updates).forEach(key => updates[key] === undefined && delete updates[key])
     const sizes = parseMaybeJSON(body.printSizes)
     const materials = parseMaybeJSON(body.printMaterials)
     const frames = parseMaybeJSON(body.framingOptions)

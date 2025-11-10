@@ -18,13 +18,4 @@ async function protect(req, res, next) {
   return res.status(401).json({ message: 'Not authorized, no token' })
 }
 
-function authorize(...roles) {
-  return (req, res, next) => {
-    if (!req.user || (roles.length && !roles.includes(req.user.role))) {
-      return res.status(403).json({ message: 'Forbidden' })
-    }
-    next()
-  }
-}
-
-module.exports = { protect, authorize }
+module.exports = { protect }
