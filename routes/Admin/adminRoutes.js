@@ -154,6 +154,46 @@ router.put(
 router.delete('/testimonials/:id', adminProtect, deleteTestimonial)
 
 
+//////////////////////// Order Routes ////////////////////////
+
+const {
+  listOrders,
+  getOrder,
+  updateOrderStatus,
+  getOrderStats,
+} = require('../../controllers/Admin/orderController')
+
+// Orders
+router.get('/orders', adminProtect, listOrders)
+router.get('/orders/stats', adminProtect, getOrderStats)
+router.get('/orders/:id', adminProtect, getOrder)
+router.put('/orders/:id/status', adminProtect, updateOrderStatus)
+
+
+//////////////////////// Customer Routes ////////////////////////
+
+const {
+  listCustomers,
+  getCustomer,
+  getCustomerStats,
+} = require('../../controllers/Admin/customerController')
+
+// Customers
+router.get('/customers', adminProtect, listCustomers)
+router.get('/customers/stats', adminProtect, getCustomerStats)
+router.get('/customers/:id', adminProtect, getCustomer)
+
+
+//////////////////////// Analytics Routes ////////////////////////
+
+const {
+  getDashboardStats,
+} = require('../../controllers/Admin/analyticsController')
+
+// Analytics
+router.get('/analytics/dashboard', adminProtect, getDashboardStats)
+
+
 module.exports = router
 
 
